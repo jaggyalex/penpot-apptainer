@@ -1,0 +1,2 @@
+Bootstrap: docker
+From: sj26/mailcatcher:latest
