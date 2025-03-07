@@ -1,7 +1,7 @@
 help:
 	@echo "Help information"
 
-run: postgres redis mailcatch
+run: postgres redis mailcatch exporter
 	@echo "Running PenPot..."
 
 postgres: containers/postgres.sif
@@ -9,6 +9,11 @@ postgres: containers/postgres.sif
 redis: containers/redis.sif
 
 mailcatch: containers/mailcatch.sif
+
+exporter: containers/exporter.sif
+
+containers/exporter.sif:
+	singularity build -f containers/exporter.sif definitions/exporter.def
 
 containers/postgres.sif:
 	mkdir postgres_data
@@ -30,5 +35,7 @@ clean:
 	rm -rf containers/redis.sif
 	@# Mail Catch
 	rm -rf containers/mailcatch.sif
+	@# Exporter
+	rm -rf containers/exproter.sif
 
 .PHONY: help clean
