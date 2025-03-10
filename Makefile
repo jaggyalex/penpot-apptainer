@@ -13,6 +13,40 @@ list:
 stop:
 	singularity instance stop -a
 
+start:
+	@singularity -s instance start \
+	containers/mailcatch.sif mailcatch
+
+	@singularity -s instance start \
+	containers/redis.sif redis
+	@until singularity -s exec containers/redis.sif \
+	redis-cli ping | grep -q PONG; do \
+		sleep 2; \
+	done
+
+	@singularity -s instance start \
+	-B postgres_data:/var/lib/postgresql/data \
+	-B postgres_run:/var/run/postgresql \
+	containers/postgres.sif postgres
+	@until singularity -s exec containers/postgres.sif \
+	pg_isready -U penpot -q; do \
+		sleep 2; \
+	done
+
+	@singularity -s instance start \
+	containers/exporter.sif exporter
+
+	@singularity -s instance start \
+	-B penpot_assets:/opt/data/assets \
+	containers/backend.sif backend
+	@until netstat -tnlp | grep -q :6061; do \
+		sleep 2; \
+	done
+	
+	@singularity -s instance start \
+	-B penpot_assets:/opt/data/assets \
+	containers/frontend.sif frontend
+
 net-check:
 	@echo "Mailcatch:"
 	netstat -tnlp | grep :1080
