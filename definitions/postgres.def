@@ -2,7 +2,12 @@ Bootstrap: docker
 From: postgres:15
 
 %environment
-    export POSTGRES_INITDB_ARGS=--data-checksums
-    export POSTGRES_DB=penpot
-    export POSTGRES_USER=penpot
-    export POSTGRES_PASSWORD=penpot
+    export POSTGRES_INITDB_ARGS="--data-checksums"
+    export PGHOST="localhost"
+    export PGPORT="5433"
+    export POSTGRES_DB="penpot"
+    export POSTGRES_USER="penpot"
+    export POSTGRES_PASSWORD="penpot"
+
+%startscript
+    docker-entrypoint.sh postgres

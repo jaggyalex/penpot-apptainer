@@ -1,2 +1,5 @@
 Bootstrap: docker
 From: redis:7.2
+
+%startscript
+    docker-entrypoint.sh redis-server

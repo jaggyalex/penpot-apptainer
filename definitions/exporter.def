@@ -2,9 +2,13 @@ Bootstrap: docker
 From: penpotapp/exporter
 
 %environment
-    PENPOT_PUBLIC_URI="http://penpot-frontend:8080"
-    PENPOT_REDIS_URI="redis://penpot-redis/0"
+    export PENPOT_PUBLIC_URI="http://localhost:9001"
+    export PENPOT_REDIS_URI="redis://localhost/0"
 
 %runscript
+    cd /opt/penpot/exporter
+    node app.js
+
+%startscript
     cd /opt/penpot/exporter
     node app.js

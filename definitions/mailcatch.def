@@ -1,2 +1,5 @@
 Bootstrap: docker
 From: sj26/mailcatcher:latest
+
+%startscript
+    mailcatcher --foreground --ip 0.0.0.0
