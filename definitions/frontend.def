@@ -1,0 +1,35 @@
+Bootstrap: docker
+From: penpotapp/frontend
+
+%environment
+    export PENPOT_FLAGS="disable-email-verification enable-smtp enable-prepl-server disable-secure-session-cookies"
+    export PENPOT_HTTP_SERVER_MAX_BODY_SIZE="31457280"
+    export PENPOT_HTTP_SERVER_MAX_MULTIPART_BODY_SIZE="367001600"
+    export PENPOT_DATABASE_URI="postgresql://localhost:5433/penpot"
+    export PENPOT_DATABASE_USERNAME="penpot"
+    export PENPOT_DATABASE_PASSWORD="penpot"
+    export PENPOT_REDIS_URI="redis://localhost/0"
+    export PENPOT_ASSETS_STORAGE_BACKEND="assets-fs"
+    export PENPOT_STORAGE_ASSETS_FS_DIRECTORY="/opt/data/assets"
+    export PENPOT_TELEMETRY_ENABLED="true"
+    export PENPOT_TELEMETRY_REFERER="compose"
+    export PENPOT_SMTP_DEFAULT_FROM="no-reply@example.com"
+    export PENPOT_SMTP_DEFAULT_REPLY_TO="no-reply@example.com"
+    export PENPOT_SMTP_HOST="localhost"
+    export PENPOT_SMTP_PORT="1025"
+    export PENPOT_SMTP_USERNAME=""
+    export PENPOT_SMTP_PASSWORD=""
+    export PENPOT_SMTP_TLS=false
+    export PENPOT_SMTP_SSL=false
+
+%post
+    export PENPOT_FLAGS="disable-email-verification enable-smtp enable-prepl-server disable-secure-session-cookies"
+    export PENPOT_BACKEND_URI="http://localhost:6060"
+    export PENPOT_EXPORTER_URI="http://localhost:6061"
+    /bin/bash /entrypoint.sh
+
+%runscript
+    nginx -g "daemon off;"
+
+%startscript
+    nginx -g "daemon off;"
